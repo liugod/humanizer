@@ -1,143 +1,132 @@
-# Humanizer
+# Humanizer（中文版）
 
-A Claude Code skill that removes signs of AI-generated writing from text, making it sound more natural and human.
+一个 Claude Code skill，用于去除中文文本中 AI 生成写作的痕迹，让写作读起来更自然、更像真人所写。
 
-## Installation
+## 安装
 
-### Recommended (clone directly into Claude Code skills directory)
+### 推荐方式（直接克隆到 Claude Code skills 目录）
 
 ```bash
 mkdir -p ~/.claude/skills
-git clone https://github.com/blader/humanizer.git ~/.claude/skills/humanizer
+git clone https://github.com/liugod/humanizer.git ~/.claude/skills/humanizer
 ```
 
-### Manual install/update (only the skill file)
+### 手动安装/更新（仅复制 skill 文件）
 
-If you already have this repo cloned (or you downloaded `SKILL.md`), copy the skill file into Claude Code’s skills directory:
+如果你已经克隆了该仓库（或下载了 `SKILL.md`），将 skill 文件复制到 Claude Code 的 skills 目录：
 
 ```bash
 mkdir -p ~/.claude/skills/humanizer
 cp SKILL.md ~/.claude/skills/humanizer/
 ```
 
-## Usage
+## 使用方式
 
-In Claude Code, invoke the skill:
+在 Claude Code 中调用 skill：
 
 ```
 /humanizer
 
-[paste your text here]
+[在此粘贴你的文本]
 ```
 
-Or ask Claude to humanize text directly:
+或直接要求 Claude 对文本进行去AI化处理：
 
 ```
-Please humanize this text: [your text]
+请帮我把这段文字去AI化：[你的文本]
 ```
 
-## Overview
+## 概述
 
-Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) guide, maintained by WikiProject AI Cleanup. This comprehensive guide comes from observations of thousands of instances of AI-generated text.
+基于对大量中文 AI 生成文本常见特征的系统性观察，并参考维基百科英文版 [Wikipedia:Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) 的方法论框架。
 
-The skill also includes a final "obviously AI generated" audit pass and a second rewrite, to catch lingering AI-isms in the first draft.
+该 skill 还包含一个最终"为什么一眼看出是 AI 写的"审查环节，以及二次修改步骤，用于捕捉初稿中残留的 AI 痕迹。
 
-### Key Insight from Wikipedia
+### 核心洞见
 
-> "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
+> 「大语言模型用统计算法预测下一个最可能出现的词，结果是最适合最多种场景的统计平均答案——读起来像每个人写的，实际上像没有人写的。」
 
-## 24 Patterns Detected (with Before/After Examples)
+## 24 个检测模式（含修改前后示例）
 
-### Content Patterns
+### 内容模式
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 1 | **Significance inflation** | "marking a pivotal moment in the evolution of..." | "was established in 1989 to collect regional statistics" |
-| 2 | **Notability name-dropping** | "cited in NYT, BBC, FT, and The Hindu" | "In a 2024 NYT interview, she argued..." |
-| 3 | **Superficial -ing analyses** | "symbolizing... reflecting... showcasing..." | Remove or expand with actual sources |
-| 4 | **Promotional language** | "nestled within the breathtaking region" | "is a town in the Gonder region" |
-| 5 | **Vague attributions** | "Experts believe it plays a crucial role" | "according to a 2019 survey by..." |
-| 6 | **Formulaic challenges** | "Despite challenges... continues to thrive" | Specific facts about actual challenges |
+| # | 模式 | 修改前 | 修改后 |
+|---|------|--------|--------|
+| 1 | **意义膨胀** | "标志着历史性的里程碑式意义……" | "1989年成立，负责收集地区统计数据" |
+| 2 | **媒体报道堆叠** | "受到人民日报、新华社、央视等广泛报道" | "2024年她在《第一财经》采访中提出……" |
+| 3 | **虚假深度短语** | "推动……的发展，助力……的进程" | 删去或用真实来源补充 |
+| 4 | **宣传广告化语言** | "坐落于风光旖旎的……打造一流……" | "是贡德尔地区的一个小镇" |
+| 5 | **模糊归因** | "专家指出……业界普遍认为……" | "据2019年中国科学院调查记录" |
+| 6 | **程式化"挑战"段落** | "尽管面临挑战……仍砥砺前行" | 用具体事实说明实际问题 |
 
-### Language Patterns
+### 语言模式
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 7 | **AI vocabulary** | "Additionally... testament... landscape... showcasing" | "also... remain common" |
-| 8 | **Copula avoidance** | "serves as... features... boasts" | "is... has" |
-| 9 | **Negative parallelisms** | "It's not just X, it's Y" | State the point directly |
-| 10 | **Rule of three** | "innovation, inspiration, and insights" | Use natural number of items |
-| 11 | **Synonym cycling** | "protagonist... main character... central figure... hero" | "protagonist" (repeat when clearest) |
-| 12 | **False ranges** | "from the Big Bang to dark matter" | List topics directly |
+| # | 模式 | 修改前 | 修改后 |
+|---|------|--------|--------|
+| 7 | **AI高频词** | "赋能、布局、生态、底层逻辑、抓手" | 用具体动词和名词替代 |
+| 8 | **谓语膨胀** | "发挥着……的作用、承担……职能" | "是……" |
+| 9 | **否定平行结构** | "不仅……更是……" | 直接表达核心观点 |
+| 10 | **三段式套路** | "首先……其次……最后……" | 用自然数量的要点 |
+| 11 | **同义词循环** | "主角……核心人物……中心人物……英雄" | "主角"（重复使用最清晰的词） |
+| 12 | **虚假范围** | "从理论到实践，从个人到社会" | 直接列举具体内容 |
 
-### Style Patterns
+### 风格模式
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 13 | **Em dash overuse** | "institutions—not the people—yet this continues—" | Use commas or periods |
-| 14 | **Boldface overuse** | "**OKRs**, **KPIs**, **BMC**" | "OKRs, KPIs, BMC" |
-| 15 | **Inline-header lists** | "**Performance:** Performance improved" | Convert to prose |
-| 16 | **Title Case Headings** | "Strategic Negotiations And Partnerships" | "Strategic negotiations and partnerships" |
-| 17 | **Emojis** | "🚀 Launch Phase: 💡 Key Insight:" | Remove emojis |
-| 18 | **Curly quotes** | `said “the project”` | `said "the project"` |
+| # | 模式 | 修改前 | 修改后 |
+|---|------|--------|--------|
+| 13 | **破折号滥用** | "机构——而非当地人——在推动——" | 用逗号或句号 |
+| 14 | **加粗滥用** | "**OKR**、**KPI**、**BMC**" | "OKR、KPI、BMC" |
+| 15 | **带标题的列表** | "**性能：** 性能得到提升" | 改写成散文 |
+| 16 | **标题大词化** | "战略谈判与全球伙伴关系深度融合与协同发展" | "谈判与国际合作" |
+| 17 | **Emoji滥用** | "🚀 启动阶段：💡 核心洞察：" | 删去Emoji |
+| 18 | **书名号/引号滥用** | "该《方案》推进"高质量发展"" | "该方案要求提高发展质量" |
 
-### Communication Patterns
+### 交流模式
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 19 | **Chatbot artifacts** | "I hope this helps! Let me know if..." | Remove entirely |
-| 20 | **Cutoff disclaimers** | "While details are limited in available sources..." | Find sources or remove |
-| 21 | **Sycophantic tone** | "Great question! You're absolutely right!" | Respond directly |
+| # | 模式 | 修改前 | 修改后 |
+|---|------|--------|--------|
+| 19 | **对话式残留物** | "当然！希望对您有所帮助！如有需要……" | 完全删去 |
+| 20 | **知识截止声明** | "由于相关信息有限，基于现有资料……" | 找到来源或删去 |
+| 21 | **谄媚奉承语气** | "这是个好问题！您说得非常对！" | 直接回应 |
 
-### Filler and Hedging
+### 填充与模糊
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 22 | **Filler phrases** | "In order to", "Due to the fact that" | "To", "Because" |
-| 23 | **Excessive hedging** | "could potentially possibly" | "may" |
-| 24 | **Generic conclusions** | "The future looks bright" | Specific plans or facts |
+| # | 模式 | 修改前 | 修改后 |
+|---|------|--------|--------|
+| 22 | **填充短语** | "随着社会的不断发展和进步"、"在新形势下" | "为此"、"因为" |
+| 23 | **过度模糊** | "在某种程度上或许可能" | "可能" |
+| 24 | **泛泛而谈的正面结论** | "未来可期，前景广阔，砥砺前行" | 具体计划或事实 |
 
-## Full Example
+## 完整示例
 
-**Before (AI-sounding):**
-> Great question! Here is an essay on this topic. I hope this helps!
+**修改前（典型AI腔调）：**
+> 当然！以下是关于这一话题的分析，希望对您有所帮助！
 >
-> AI-assisted coding serves as an enduring testament to the transformative potential of large language models, marking a pivotal moment in the evolution of software development. In today's rapidly evolving technological landscape, these groundbreaking tools—nestled at the intersection of research and practice—are reshaping how engineers ideate, iterate, and deliver, underscoring their vital role in modern workflows.
->
-> At its core, the value proposition is clear: streamlining processes, enhancing collaboration, and fostering alignment. It's not just about autocomplete; it's about unlocking creativity at scale, ensuring that organizations can remain agile while delivering seamless, intuitive, and powerful experiences to users. The tool serves as a catalyst. The assistant functions as a partner. The system stands as a foundation for innovation.
->
-> Industry observers have noted that adoption has accelerated from hobbyist experiments to enterprise-wide rollouts, from solo developers to cross-functional teams. The technology has been featured in The New York Times, Wired, and The Verge. Additionally, the ability to generate documentation, tests, and refactors showcases how AI can contribute to better outcomes, highlighting the intricate interplay between automation and human judgment.
->
-> - 💡 **Speed:** Code generation is significantly faster, reducing friction and empowering developers.
-> - 🚀 **Quality:** Output quality has been enhanced through improved training, contributing to higher standards.
-> - ✅ **Adoption:** Usage continues to grow, reflecting broader industry trends.
->
-> While specific details are limited based on available information, it could potentially be argued that these tools might have some positive effect. Despite challenges typical of emerging technologies—including hallucinations, bias, and accountability—the ecosystem continues to thrive. In order to fully realize this potential, teams must align with best practices.
->
-> In conclusion, the future looks bright. Exciting times lie ahead as we continue this journey toward excellence. Let me know if you’d like me to expand on any section!
+> AI辅助编程作为大语言模型变革潜能的深刻体现，标志着软件开发领域迈入了一个具有里程碑意义的历史性新阶段。……该工具是催化剂。该助手是合作伙伴。该系统是创新的基础底座。……未来可期。让我们在这段通往卓越的旅途中携手同行。如需进一步展开，欢迎随时告知！
 
-**After (Humanized):**
-> AI coding assistants can speed up the boring parts of the job. They're great at boilerplate: config files and the little glue code you don't want to write. They can also help you sketch a test, but you still have to read it.
+**修改后（去AI化）：**
+> AI编程工具能帮你把无聊的部分做快一点。不是所有事情。架构肯定不行。
 >
-> The dangerous part is how confident the suggestions look. I've accepted code that compiled and passed lint, then discovered later it missed the point because I stopped paying attention.
+> 写样板代码很好用：配置文件、测试框架、那些你不想亲自写的胶水代码。问题是它给出的建议看起来总是很自信。我接受过一些能编译、能过lint的代码，后来发现根本没做对事——因为我看着看着就停止思考了。
 >
-> If you treat it like autocomplete and review every line, it's useful. If you use it to avoid thinking, it will help you ship bugs faster.
+> 认识的人基本上两种反应：要么当成自动补全一直用，每行都自己看；要么因为它一直建议不对的写法就关掉了。
 >
-> The only real backstop is tests. Without them, you're mostly judging vibes.
+> 效率数据很难讲。没有测试的话，你基本上不知道它建议的东西对不对。
 
-## References
+## 参考
 
-- [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) - Primary source
-- [WikiProject AI Cleanup](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_AI_Cleanup) - Maintaining organization
+- [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) — 方法论来源
+- [WikiProject AI Cleanup](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_AI_Cleanup) — 维护组织
 
-## Version History
+## 版本历史
 
-- **2.2.0** - Added a final "obviously AI generated" audit + second-pass rewrite prompts
-- **2.1.1** - Fixed pattern #18 example (curly quotes vs straight quotes)
-- **2.1.0** - Added before/after examples for all 24 patterns
-- **2.0.0** - Complete rewrite based on raw Wikipedia article content
-- **1.0.0** - Initial release
+- **3.0.0** — 全面改写为中文语境版本：24个检测模式、示例均适配中文AI写作特征
+- **2.2.0** — 英文版：增加"一眼就看出是AI写的"最终审查与二次修改提示
+- **2.1.1** — 修复模式 #18 示例（弯引号 vs 直引号）
+- **2.1.0** — 为全部24个模式增加修改前后示例
+- **2.0.0** — 基于维基百科原始内容完全重写
+- **1.0.0** — 初始版本
 
-## License
+## 许可证
 
 MIT
